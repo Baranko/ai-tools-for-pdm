@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кто выгуливает Бориса — Догяндекс</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { scrollbar-gutter: stable; }
+    html:has(#slot-conflict[open]) { scrollbar-gutter: auto; }
+    body { margin: 0; background: #f5f4ef; color: #243129; font: 16px/1.6 system-ui, sans-serif; }
+    body:has(dialog[open]) { overflow: hidden; }
+    header { border-bottom: 1px solid #dce2d8; background: #fff; }
+    .container { width: min(100% - 48px, 1080px); margin-inline: auto; }
+    header .container { padding-block: 20px; font-size: 20px; font-weight: 750; }
+    header span { margin-left: 20px; color: #556257; font-size: 14px; font-weight: 400; }
+    main { padding-block: 24px 56px; }
+    h1 { max-width: 720px; margin: 0 0 16px; font-size: clamp(30px, 4vw, 46px); line-height: 1.15; letter-spacing: -.03em; text-wrap: balance; }
+    h2 { margin: 0; font-size: 32px; line-height: 1.2; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+    p { margin: 0 0 16px; }
+    .intro { max-width: 56ch; margin-bottom: 20px; color: #526052; font-size: 18px; }
+    .date { display: inline-block; margin-bottom: 24px; padding: 8px 14px; border: 1px solid #cedbc7; border-radius: 8px; background: #eaf1e6; color: #304d2b; font-weight: 650; }
+    .notice { margin-bottom: 12px; padding: 12px 16px; border-left: 3px solid #a9762d; border-radius: 0 6px 6px 0; background: #fff3df; color: #684b20; font-size: 14px; }
+    .slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; gap: 20px; padding: 0; margin: 28px 0 20px; list-style: none; }
+    .slot { min-width: 0; min-height: 270px; padding: 24px; border: 1px solid #cdd8c7; border-top: 4px solid #547c45; border-radius: 12px; background: #fff; box-shadow: 0 3px 12px #24312906; }
+    .slot-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 24px; }
+    .badge { flex-shrink: 0; padding: 4px 10px; border-radius: 20px; background: #e9f3e2; color: #325326; font-size: 14px; font-weight: 650; }
+    .slot.booked { background: #fff7eb; border-color: #e2ccab; border-top-color: #a9762d; box-shadow: none; }
+    .booked .badge { background: #f3e1c4; color: #6c481b; }
+    label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 650; }
+    input, button { width: 100%; min-width: 0; font: inherit; border-radius: 8px; min-height: 48px; }
+    input { padding: 10px 12px; color: inherit; background: #fff; border: 1px solid #87977f; }
+    input:hover { border-color: #436c35; }
+    button { margin-top: 14px; padding: 11px 12px; border: 0; background: #365d2e; color: #fff; font-weight: 650; cursor: pointer; overflow-wrap: anywhere; }
+    button:hover { background: #284823; }
+    button:active { background: #1e391a; }
+    button:disabled { opacity: .65; cursor: wait; }
+    :focus-visible { outline: 3px solid #95601b; outline-offset: 3px; }
+    .booking { padding-top: 2px; color: #614923; }
+    .booking > span { font-size: 14px; }
+    .person { margin: 8px 0 0; color: #3e321f; font-size: 20px; line-height: 1.4; font-weight: 650; overflow-wrap: anywhere; }
+    .status { min-height: 26px; color: #345226; font-weight: 600; overflow-wrap: anywhere; }
+    .help { margin-bottom: 0; color: #526052; font-size: 14px; }
+    #feeding-open { width: auto; margin-top: 16px; }
+    .feeding { width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid #cdd8c7; border-top: 4px solid #547c45; border-radius: 12px; background: #fff; color: #243129; font: inherit; overflow-y: auto; }
+    .feeding::backdrop { background: #24312999; }
+    .feeding-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 24px; }
+    .feeding-header h2 { min-width: 0; font-size: 24px; line-height: 1.3; overflow-wrap: anywhere; }
+    #feeding-close { flex-shrink: 0; width: 44px; height: 44px; margin: 0; padding: 0; border: 1px solid #cdd8c7; background: #f5f4ef; color: #365d2e; font-size: 26px; line-height: 1; font-weight: 400; }
+    #feeding-close:hover { background: #eaf1e6; }
+    .feeding-content { display: grid; gap: 24px; padding: 24px; border-top: 1px solid #dce2d8; }
+    .feeding-picture { margin: 0; }
+    #feeding-image { display: block; width: auto; height: auto; max-width: min(100%, 220px); max-height: 280px; margin-inline: auto; border-radius: 8px; }
+    #feeding-image-caption { margin-top: 12px; color: #526052; font-size: 14px; text-align: center; overflow-wrap: anywhere; }
+    #feeding-record { padding: 16px; border: 1px solid #dce2d8; border-radius: 8px; background: #f5f4ef; overflow-wrap: anywhere; }
+    #feeding-record .person { margin: 4px 0 16px; color: #243129; }
+    #feeding-time { display: block; margin: 4px 0 0; font-weight: 600; }
+    #feeding-form { width: 100%; }
+    #feeding-help { margin-top: 8px; }
+    #feeding-status { min-height: 0; margin: 0; }
+    #feeding-status:empty { display: none; }
+    .slot-conflict { position: fixed; inset: 50% auto auto 50%; transform: translate(-50%, -50%); margin: 0; border-top-color: #a9762d; }
+    .slot-conflict p, .slot-conflict button { margin: 0; }
+    [hidden] { display: none !important; }
+    @media (max-width: 960px) {
+      .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 620px) {
+      .slots { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    }
+    @media (max-width: 480px) {
+      .container { width: calc(100% - 32px); }
+      main { padding-block: 16px 36px; }
+      header .container { padding-block: 16px; }
+      header span { display: block; margin: 4px 0 0; font-size: 14px; }
+      .intro { font-size: 16px; }
+      .date { padding: 8px 12px; font-size: 14px; }
+      .slot { padding: 20px; }
+      .feeding-header { padding: 20px; }
+      .feeding-header h2 { font-size: 20px; }
+      .feeding-content { gap: 20px; padding: 20px; }
+      #feeding-image { max-height: 220px; }
+    }
+  </style>
+</head>
+<body>
+  <header><div class="container">Догяндекс <span>Заботимся об офисном псе</span></div></header>
+  <main class="container">
+    <h1>Кто выгуливает Бориса</h1>
+    <p class="intro">Выберите свободное время для прогулки, введите ФИО и подтвердите запись.</p>
+    <time class="date" id="today"></time>
+    <p class="notice" id="connection-note" hidden>Откройте страницу через http://localhost:3000 после запуска сервера командой npm start.</p>
+    <p class="help" id="name-help">Используйте только вымышленные ФИО, например «Анна Тестова».</p>
+    <button id="feeding-open" type="button" aria-haspopup="dialog" aria-controls="feeding-card">Кто кормил?</button>
+    <noscript><p>Для отображения слотов и записи на прогулку включите JavaScript в браузере.</p></noscript>
+    <ul class="slots" id="slots" aria-label="Слоты прогулок на сегодня"></ul>
+    <p class="status" id="status" role="status" aria-live="polite" aria-atomic="true">Загружаем слоты…</p>
+    <dialog class="feeding slot-conflict" id="slot-conflict" role="alertdialog" aria-labelledby="slot-conflict-title" aria-describedby="slot-conflict-message">
+      <div class="feeding-header">
+        <h2 id="slot-conflict-title">Не удалось записаться</h2>
+      </div>
+      <div class="feeding-content">
+        <p id="slot-conflict-message"></p>
+        <button id="slot-conflict-close" type="button" autofocus>Понятно</button>
+      </div>
+    </dialog>
+    <dialog class="feeding" id="feeding-card" aria-labelledby="feeding-title">
+      <div class="feeding-header">
+        <h2 id="feeding-title">Последнее кормление</h2>
+        <button id="feeding-close" type="button" aria-label="Закрыть окно" autofocus>×</button>
+      </div>
+      <div class="feeding-content">
+        <figure class="feeding-picture" id="feeding-picture" hidden>
+          <img id="feeding-image" src="/images/sadDog.jpg" alt="Борис ждёт кормления" width="991" height="1280">
+          <figcaption id="feeding-image-caption">Проверяем, отмечено ли кормление сегодня…</figcaption>
+        </figure>
+        <div id="feeding-record" aria-live="polite" aria-atomic="true" hidden>
+          <p class="help">Кто покормил</p>
+          <p class="person" id="feeding-name"></p>
+          <p class="help">Когда (по Москве)</p>
+          <time id="feeding-time"></time>
+        </div>
+        <form id="feeding-form" aria-label="Отметить новое кормление">
+          <label for="feeding-employee">ФИО сотрудника</label>
+          <input id="feeding-employee" name="employee-name" type="text" required aria-describedby="feeding-help">
+          <p class="help" id="feeding-help">Используйте вымышленные ФИО, например «Анна Тестова».</p>
+          <button type="submit">Отметить кормление</button>
+        </form>
+        <p class="status" id="feeding-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </div>
+    </dialog>
+  </main>
+  <script>
+    'use strict';
+
+    const today = document.getElementById('today');
+    const slots = document.getElementById('slots');
+    const status = document.getElementById('status');
+    const slotConflict = document.getElementById('slot-conflict');
+
+    function showSlotConflict(message) {
+      announce('');
+      document.getElementById('slot-conflict-message').textContent = message;
+      if (!slotConflict.open) slotConflict.showModal();
+    }
+
+    document.getElementById('slot-conflict-close').addEventListener('click', () => slotConflict.close());
+    slotConflict.addEventListener('close', () => {
+      const availableInput = slots.querySelector('.slot:not(.booked) input');
+      if (availableInput) availableInput.focus();
+      else {
+        slots.tabIndex = -1;
+        slots.focus();
+      }
+    });
+
+    function announce(message, focus = false) {
+      status.textContent = message;
+      if (focus) {
+        status.tabIndex = -1;
+        status.focus();
+      }
+    }
+
+    function renderState(state) {
+      today.dateTime = state.date;
+      today.textContent = 'Сегодня: ' + new Intl.DateTimeFormat('ru-RU', {
+        timeZone: state.time_zone, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      }).format(new Date(state.date + 'T12:00:00Z')) + ' (Москва)';
+      slots.replaceChildren();
+
+      for (const slot of state.slots) {
+        const time = slot.slot_time;
+        const card = document.createElement('li');
+        card.className = 'slot';
+        card.innerHTML = `
+          <div class="slot-heading">
+            <h2 id="slot-${slot.id}"><time>${time}</time></h2>
+            <span class="badge">Свободен</span>
+          </div>
+          <form aria-labelledby="slot-${slot.id}">
+            <label for="name-${slot.id}">ФИО</label>
+            <input id="name-${slot.id}" name="employee-name" type="text" required aria-describedby="name-help">
+            <button type="submit">Записаться на ${time}</button>
+          </form>
+          <div class="booking" hidden>
+            <span>С Борисом гуляет</span>
+            <p class="person"></p>
+          </div>`;
+
+        const form = card.querySelector('form');
+        if (slot.booked_by !== null) {
+          card.classList.add('booked');
+          card.querySelector('.badge').textContent = 'Занят';
+          card.querySelector('.person').textContent = slot.booked_by;
+          form.hidden = true;
+          card.querySelector('.booking').hidden = false;
+        } else {
+          const input = card.querySelector('input');
+          const button = card.querySelector('button');
+          input.addEventListener('input', () => input.setCustomValidity(''));
+          form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (button.disabled) return;
+            const name = input.value.trim().replace(/\s+/g, ' ');
+            if (!name) {
+              input.setCustomValidity('Введите ФИО: одних пробелов недостаточно.');
+              input.reportValidity();
+              return;
+            }
+            button.disabled = true;
+            button.textContent = 'Сохраняем…';
+            announce('Сохраняем запись…');
+            try {
+              const response = await fetch(`/api/slots/${slot.id}/book`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ employee_name: name, walk_date: state.date })
+              });
+              const result = await response.json();
+              if (result.state) renderState(result.state);
+              if (response.ok) {
+                announce('');
+              } else if (response.status === 409) {
+                showSlotConflict(result.message || 'Этот слот уже занят. Выберите другое время.');
+              } else {
+                announce(result.message || 'Не удалось сохранить запись. Попробуйте ещё раз.', true);
+              }
+            } catch {
+              announce('Не удалось получить подтверждение от сервера. Обновите страницу, чтобы проверить запись.', true);
+            } finally {
+              button.disabled = false;
+              button.textContent = `Записаться на ${time}`;
+            }
+          });
+        }
+        slots.append(card);
+      }
+    }
+
+    async function loadSlots() {
+      if (location.protocol === 'file:') {
+        document.getElementById('connection-note').hidden = false;
+        announce('Для записи на прогулку нужен запущенный сервер.');
+        return;
+      }
+      try {
+        const response = await fetch('/api/slots', { cache: 'no-store' });
+        if (!response.ok) throw new Error();
+        renderState(await response.json());
+        announce('');
+      } catch {
+        announce('Не удалось загрузить слоты. Проверьте, что сервер запущен, и обновите страницу.');
+      }
+    }
+
+    const feedingCard = document.getElementById('feeding-card');
+    const feedingForm = document.getElementById('feeding-form');
+    const feedingInput = document.getElementById('feeding-employee');
+    const feedingButton = feedingForm.querySelector('button');
+    const feedingStatus = document.getElementById('feeding-status');
+    const feedingImage = document.getElementById('feeding-image');
+    const feedingCaption = document.getElementById('feeding-image-caption');
+    const feedingPicture = document.getElementById('feeding-picture');
+    let feedingRequest = 0;
+    let feedingOpenVersion = 0;
+
+    function showDog(fedToday, caption) {
+      feedingPicture.hidden = false;
+      feedingImage.src = fedToday ? '/images/happyDog.jpg' : '/images/sadDog.jpg';
+      feedingImage.alt = fedToday ? 'Довольный Борис после кормления' : 'Борис ждёт кормления';
+      feedingImage.width = fedToday ? 960 : 991;
+      feedingImage.height = 1280;
+      feedingCaption.textContent = caption;
+    }
+
+    function renderFeeding(data, { justFed = false } = {}) {
+      const feeding = data.feeding;
+      feedingPicture.hidden = true;
+      if (feeding && justFed) {
+        showDog(true, 'Кормление отмечено. Спасибо за заботу о Борисе!');
+      } else if (!feeding) {
+        showDog(false, 'Кормление ещё не отмечено.');
+      }
+      document.getElementById('feeding-record').hidden = !feeding;
+      if (!feeding) return;
+      document.getElementById('feeding-name').textContent = feeding.employee_name;
+      const time = document.getElementById('feeding-time');
+      time.dateTime = feeding.fed_at;
+      time.textContent = new Intl.DateTimeFormat('ru-RU', {
+        timeZone: data.time_zone, day: 'numeric', month: 'long', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      }).format(new Date(feeding.fed_at));
+    }
+
+    async function loadFeeding() {
+      if (feedingButton.disabled) return;
+      feedingPicture.hidden = true;
+      document.getElementById('feeding-record').hidden = true;
+      if (location.protocol === 'file:') {
+        showDog(false, 'Информация о сегодняшнем кормлении недоступна.');
+        feedingStatus.textContent = 'Откройте страницу через запущенный сервер.';
+        return;
+      }
+      const request = ++feedingRequest;
+      feedingStatus.textContent = 'Загружаем последнее кормление…';
+      try {
+        const response = await fetch('/api/feedings/latest', { cache: 'no-store' });
+        if (!response.ok) throw new Error();
+        const data = await response.json();
+        if (request !== feedingRequest) return;
+        renderFeeding(data);
+        feedingStatus.textContent = '';
+      } catch {
+        if (request === feedingRequest) {
+          showDog(false, 'Не удалось проверить, отмечено ли кормление сегодня.');
+          feedingStatus.textContent = 'Не удалось загрузить кормление. Закройте и откройте окно, чтобы повторить.';
+        }
+      }
+    }
+
+    document.getElementById('feeding-open').addEventListener('click', () => {
+      ++feedingOpenVersion;
+      feedingPicture.hidden = true;
+      feedingCard.showModal();
+      loadFeeding();
+    });
+    document.getElementById('feeding-close').addEventListener('click', () => feedingCard.close());
+    feedingCard.addEventListener('close', () => {
+      if (!feedingCard.open) document.getElementById('feeding-open').focus();
+    });
+    feedingInput.addEventListener('input', () => feedingInput.setCustomValidity(''));
+    feedingForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (feedingButton.disabled) return;
+      const name = feedingInput.value.trim().replace(/\s+/g, ' ');
+      if (!name) {
+        feedingInput.setCustomValidity('Введите ФИО: одних пробелов недостаточно.');
+        feedingInput.reportValidity();
+        return;
+      }
+      if (location.protocol === 'file:') {
+        feedingStatus.textContent = 'Откройте страницу через запущенный сервер.';
+        return;
+      }
+      ++feedingRequest; // Ответ старой загрузки не должен заменять новую отметку.
+      const submittedFrom = feedingOpenVersion;
+      feedingButton.disabled = true;
+      feedingButton.textContent = 'Сохраняем…';
+      feedingStatus.textContent = 'Сохраняем кормление…';
+      try {
+        const response = await fetch('/api/feedings', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ employee_name: name })
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          feedingStatus.textContent = data.message || 'Не удалось сохранить кормление.';
+          return;
+        }
+        renderFeeding(data, { justFed: feedingCard.open && submittedFrom === feedingOpenVersion });
+        feedingInput.value = '';
+        feedingStatus.textContent = '';
+      } catch {
+        feedingStatus.textContent = 'Не удалось получить подтверждение от сервера. Откройте карточку заново, чтобы проверить отметку.';
+      } finally {
+        feedingButton.disabled = false;
+        feedingButton.textContent = 'Отметить кормление';
+      }
+    });
+
+    loadSlots();
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        loadSlots();
+        if (feedingCard.open) loadFeeding();
+      }
+    });
+  </script>
+</body>
+</html>

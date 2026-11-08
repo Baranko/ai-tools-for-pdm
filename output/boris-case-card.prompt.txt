@@ -1,0 +1,32 @@
+Use case: infographic-diagram.
+Create one finished, polished Russian-language project case-study card as a high-resolution landscape raster image, approximately 3:2 aspect ratio. This is a standalone portfolio slide about an actual small educational software project, not a web page implementation. Deliver the complete designed card with all text readable, meticulous Cyrillic typography, no cropped content.
+
+Project: «Кто выгуливает Бориса», a local Node.js + SQLite office dog walking and feeding app for a fictional company «Догяндекс» with 111 employees. It has exactly 5 walk slots for today, server-protected atomic booking, durable SQLite storage, and a feeding modal. No real deployment or measured productivity metrics.
+
+Visual direction based on the actual application: warm off-white #f5f4ef background, forest green #365d2e accents, deep charcoal-green #243129 text, thin pale-green #cdd8c7 rules, restrained amber #a9762d for problem highlights. Modern friendly editorial design, strong hierarchy, generous intentional spacing, elegant clean sans serif with excellent Russian character shapes, crisp flat design with subtle warm paper texture. Avoid busy decorations, excessive pills or generic tech gradients.
+Composition: large distinctive project title with a small friendly illustration of a reddish-brown floppy-eared dog as a mascot near the title. Main content in four beautifully aligned numbered sections in a balanced 2 by 2 grid. Clear reading sequence: problem, solution, technology stack, result. Section headers prominent, copy comfortably readable. The title should be largest. Use fine separators and a simple small appropriate line icon per section if useful. The dog illustration should support the content and occupy no more than 15% of the composition. No additional people, dog breeds, or unrelated props.
+
+Render this EXACT Russian copy, with natural line wrapping and no added claims:
+Small eyebrow at top: "ДОГЯНДЕКС · УЧЕБНЫЙ КЕЙС"
+Main title: "Кто выгуливает Бориса"
+Subtitle: "Одна страница для прогулок и кормления офисного пса"
+
+Section 01 header: "Проблема"
+Body: "В офисе на 111 сотрудников нужен понятный способ распределить прогулки с Борисом и видеть последнее кормление."
+
+Section 02 header: "Решение"
+Body: "Пять слотов на сегодня, запись по ФИО и окно «Кто кормил?». Повторную запись в занятый слот блокирует сервер."
+Small elegant row beneath the solution with exactly these five times: "09:00   11:00   13:00   15:00   17:00"
+
+Section 03 header: "Технический стек"
+Body with clear line breaks:
+"HTML · CSS · JavaScript"
+"Node.js · SQLite"
+"Без фреймворков и внешних сервисов"
+
+Section 04 header: "Результат"
+Body: "Рабочий локальный MVP. Записи сохраняются после перезапуска, конфликты обработаны, интерфейс проверен на 375 и 1280 px."
+
+Small footer: "Синтетические данные · Локальный запуск"
+
+Constraints: beautiful useful portfolio card, all four requested sections mandatory, all content grounded in the project, no invented business results, no percentages, no corporate logos of real organizations, no cloud/server deployment claims, no browser chrome or screenshot collage, no extra tiny illegible text, no watermark. Render the actual finished card, straight-on and edge-to-edge, not a photo of a printed card.

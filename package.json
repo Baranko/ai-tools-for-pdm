@@ -1,0 +1,11 @@
+{
+  "name": "boris-walk-and-feed",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Локальная запись на прогулки с Борисом",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}
